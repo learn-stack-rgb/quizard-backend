@@ -15,7 +15,26 @@ RSpec.describe "Cards", type: :request do
   }
 
   describe "GET /index" do
-    
+    it 'get a list of cards associated with a Deck' do
+      card = deck.cards.create(
+
+        question: "What is the Capital of California?", 
+        answer: "Sacramento", 
+        seen: false,
+        correct: false,
+        deck_id: deck.id
+      )
+
+      get "/decks/#{deck.id}/cards"
+      card = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(card.first['question']).to eq('What is the Capital of California?')
+      expect(card.first['answer']).to eq('Sacramento')
+      expect(card.first['seen']).to eq(false)
+      expect(card.first['correct']).to eq(false)
+      expect(card.first['deck_id']).to eq(deck.id)
+  
+    end
   end
 
   describe 'POST /create' do
