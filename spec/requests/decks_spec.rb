@@ -1,17 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe "Decks", type: :request do
-  let(:user) { User.create(
+
+ let(:user) { User.create(
     email: 'test@example.com',
     password: 'password',
     password_confirmation: 'password'
     )
   }
-
+  
   describe "GET /index" do
-    
-  end
+    it "gets a list of decks" do
+      deck = user.decks.create(
+        title: 'Deck1'
+      )
 
+      get '/decks'
+
+      deck = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(deck.first['title']). to eq('Deck1')
+    end
+  end
+  
   describe 'POST /create' do
     it 'creates a new deck' do
       deck_params = {
