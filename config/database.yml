@@ -79,8 +79,6 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
+ production:
   <<: *default
-  database: quizard_backend_production
-  username: quizard_backend
-  password: <%= ENV["QUIZARD_BACKEND_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
